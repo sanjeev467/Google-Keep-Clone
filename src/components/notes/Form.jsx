@@ -1,6 +1,8 @@
 import { Box, TextField, ClickAwayListener } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import { DataContext } from "../../context/DataProvider";
+import { v4 as uuid } from "uuid";
 
 const Container = styled(Box)`
   display: flex;
@@ -15,8 +17,17 @@ const Container = styled(Box)`
   min-height: 30px;
 `;
 
+const note = {
+  id: "",
+  heading: "",
+  text: "",
+};
+
 const Form = () => {
   const [showTextField, setShowTextField] = useState(false);
+
+  const { notes, setNotes } = useContext(DataContext);
+  const [addNote, setAddNote] = useState({ ...note, id: uuid() });
 
   const containerRef = useRef();
 
@@ -28,6 +39,15 @@ const Form = () => {
   const handleClickAway = () => {
     setShowTextField(false);
     containerRef.current.style.minHeight = "30px";
+    setAddNote({ ...note, id: uuid() });
+    if (addNote.heading || addNote.text) {
+      setNotes((prevArr) => [addNote, ...prevArr]);
+    }
+  };
+
+  const onTextChange = (e) => {
+    const changedNote = { ...addNote, [e.target.name]: e.target.value };
+    setAddNote(changedNote);
   };
 
   return (
@@ -39,6 +59,9 @@ const Form = () => {
             variant="standard"
             InputProps={{ disableUnderline: true }}
             style={{ marginBottom: 10 }}
+            onChange={(e) => onTextChange(e)}
+            name="heading"
+            value={addNote.heading}
           />
         )}
 
@@ -48,6 +71,9 @@ const Form = () => {
           variant="standard"
           InputProps={{ disableUnderline: true }}
           onClick={onTextAreaClick}
+          onChange={(e) => onTextChange(e)}
+          name="text"
+          value={addNote.text}
         />
       </Container>
     </ClickAwayListener>
