@@ -1,10 +1,17 @@
 import React from "react";
 import SwipeDrawer from "./SwipeDrawer";
+import Notes from "./notes/Notes";
+import { Box } from "@mui/material";
 
 // components
 
 const Home = () => {
-  return <SwipeDrawer />;
+  return (
+    <Box style={{ display: "flex", width: "100%" }}>
+      <SwipeDrawer />
+      <Notes />
+    </Box>
+  );
 };
 
 export default Home;
