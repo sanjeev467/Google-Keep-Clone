@@ -4,7 +4,8 @@ import {
   ArchiveOutlined as Archive,
   DeleteOutlined as Delete,
 } from "@mui/icons-material";
-
+import { useContext } from "react";
+import { DataContext } from "../../context/DataProvider";
 const StyledCard = styled(Card)`
   width: 240px;
   margin: 8px;
@@ -14,6 +15,21 @@ const StyledCard = styled(Card)`
 `;
 
 const Note = ({ note }) => {
+  const { notes, setNotes, setAcrchiveNotes, setDeleteNotes } =
+    useContext(DataContext);
+
+  const archiveNote = (note) => {
+    const updatedNotes = notes.filter((data) => data.id !== note.id);
+    setNotes(updatedNotes);
+    setAcrchiveNotes((prevArr) => [note, ...prevArr]);
+  };
+
+  const deleteNote = (note) => {
+    const updatedNotes = notes.filter((data) => data.id !== note.id);
+    setNotes(updatedNotes);
+    setDeleteNotes((prevArr) => [note, ...prevArr]);
+  };
+
   return (
     <StyledCard>
       <CardContent>
@@ -21,8 +37,12 @@ const Note = ({ note }) => {
         <Typography>{note.text} </Typography>
       </CardContent>
       <CardActions>
-        <Archive fontSize="small" style={{ marginLeft: "auto" }} />
-        <Delete fontSize="small" />
+        <Archive
+          fontSize="small"
+          style={{ marginLeft: "auto" }}
+          onClick={() => archiveNote(note)}
+        />
+        <Delete fontSize="small" onClick={() => deleteNote(note)} />
       </CardActions>
     </StyledCard>
   );

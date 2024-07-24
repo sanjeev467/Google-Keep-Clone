@@ -12,6 +12,8 @@ import {
   DeleteOutlineOutlined as Delete,
 } from "@mui/icons-material";
 
+import { Link } from "react-router-dom";
+
 const navList = [
   { id: 1, name: "Notes", icon: <Lightbulb />, route: "/" },
   { id: 2, name: "Archives", icon: <Archive />, route: "/archive" },
@@ -31,8 +33,19 @@ const NavList = () => {
               px: 2.5,
             }}
           >
-            <ListItemIcon>{list.icon}</ListItemIcon>
-            <ListItemText primary={list.name} />
+            <Link
+              to={list.route}
+              style={{
+                textDecoration: "none",
+                display: "flex",
+                color: "inherit",
+              }}
+            >
+              <ListItemIcon style={{ alignItems: "center" }}>
+                {list.icon}
+              </ListItemIcon>
+              <ListItemText primary={list.name} />
+            </Link>
           </ListItemButton>
         </ListItem>
       ))}
